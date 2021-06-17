@@ -82,11 +82,11 @@ echo "[Bandpass]: zpdbold = $zpdbold" |& tee -a $LF
 cd $boldfolder
 
 # check if matlab exists
-set MATLAB=`which $CBIG_MATLAB_DIR/bin/matlab`
-if ($status) then
-    echo "ERROR: could not find matlab"
-    exit 1;
-endif
+# set MATLAB=`which $CBIG_MATLAB_DIR/bin/matlab`
+# if ($status) then
+    # echo "ERROR: could not find matlab"
+    # exit 1;
+# endif
 
 #############################################
 # Print an error if the user use -censor flag
@@ -105,12 +105,11 @@ endif
 
 echo "=======================Bandpass each run =======================" |& tee -a $LF
 foreach curr_bold ($zpdbold)
-
 	# Get censor file
 	if ( $censor == 1 ) then
 		set censor_file = "$subject_dir/$subject/qc/$subject"_bld"${curr_bold}${OUTLIER_stem}"
 	else 
-		set censor_file = ""
+		set censor_file = "skip"
 	endif
 
 	# get fMRI file
@@ -123,7 +122,7 @@ foreach curr_bold ($zpdbold)
 		if ( (! -e  $boldfile"_bp_"$low_f"_"$high_f".nii.gz") || ($force == 1) ) then
 			set fMRI_file = $boldfile".nii.gz"
 			set output_file = $boldfile"_bp_"$low_f"_"$high_f".nii.gz"
-			$MATLAB -nojvm -nodesktop -nodisplay -nosplash -r "addpath(fullfile('$root_dir','utilities'));CBIG_bandpass_vol '$fMRI_file' '$output_file' '$low_f' '$high_f' '$detrend' '$retrend' '$censor_file';exit " |& tee -a $LF		
+			${root_dir}/utilities/CBIG_bandpass_vol $fMRI_file $output_file $low_f $high_f $detrend $retrend $censor_file |& tee -a $LF		
 		else
 			echo "=======================Bandpass has been done!=======================" |& tee -a $LF
 		endif

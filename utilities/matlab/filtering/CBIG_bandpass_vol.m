@@ -114,14 +114,13 @@ else
 end
 
 %% if censor_file is not set, censor is empty
-if (~exist('censor_file')) 
-	error('ERROR: censor_file does not exist.')
-else 
-	if (isempty(censor_file))
-		censor = [];
-	else
-		censor = load(censor_file);
-	end
+ 
+if (isempty(censor_file))
+	censor = [];
+elseif (censor_file == "skip")
+    censor = [];
+else
+	censor = load(censor_file);
 end
 
 %% if sample period is not set, assume TR is sample period

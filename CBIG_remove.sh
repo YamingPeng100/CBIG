@@ -1,0 +1,19 @@
+cd /fileserver/caladan_ssd/repos/CBIG_compiled/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/utilities
+rm CBIG_bandpass_vol CBIG_glm_regress_vol CBIG_preproc_aCompCor_multipleruns run_CBIG_preproc_aCompCor_multipleruns.sh \
+readme.txt unresolvedSymbols.txt requiredMCRProducts.txt mccExcludedFiles.log CBIG_preproc_create_ROI_regressors \
+run_CBIG_preproc_create_ROI_regressors.sh CBIG_preproc_create_mc_regressors run_CBIG_preproc_create_mc_regressors.sh \
+CBIG_preproc_motion_outliers run_CBIG_preproc_motion_outliers.sh CBIG_preproc_DVARS_FDRMS_Correlation \
+run_CBIG_preproc_DVARS_FDRMS_Correlation.sh CBIG_preproc_plot_mcflirt_par run_CBIG_preproc_plot_mcflirt_par.sh CBIG_bpss_by_regression \
+CBIG_glm_regress_matrix
+
+cd
+cd /fileserver/caladan_ssd/repos/CBIG_compiled/utilities/matlab/filtering
+rm readme.txt unresolvedSymbols.txt requiredMCRProducts.txt mccExcludedFiles.log CBIG_bandpass_vol run_CBIG_bandpass_vol.sh \
+CBIG_bpss_by_regression run_CBIG_bpss_by_regression.sh
+
+cd ..
+cd stats
+rm readme.txt unresolvedSymbols.txt requiredMCRProducts.txt mccExcludedFiles.log CBIG_glm_regress_vol run_CBIG_glm_regress_vol.sh \
+CBIG_glm_regress_matrix run_CBIG_glm_regress_matrix.sh
+
+echo "Done removing stuff!"

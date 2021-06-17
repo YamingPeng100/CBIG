@@ -163,11 +163,11 @@ echo "=======================Creating masks done!=======================" |& tee
 #############################################
 
 # check if matlab exists
-set MATLAB=`which $CBIG_MATLAB_DIR/bin/matlab`
-if ($status) then
-	echo "ERROR: could not find matlab"
-	exit 1;
-endif
+# set MATLAB=`which $CBIG_MATLAB_DIR/bin/matlab`
+# if ($status) then
+	# echo "ERROR: could not find matlab"
+	# exit 1;
+# endif
 
 # create bold/regression folder
 set regress_folder = "$boldfolder/regression"
@@ -345,9 +345,7 @@ endif
 echo "=======================Create mc regressor=======================" |& tee -a $LF
 if ($motion12_itamar == 1) then
 	if ($mc_regressor_exist_flag == 0) then
-		set cmd = ( $MATLAB -nojvm -nodesktop -nodisplay -nosplash -r '"' 'addpath(fullfile('"'"$root_dir"'"\
-','"'"utilities"'"'))'; CBIG_preproc_create_mc_regressors "'"$mc_par_list"'" "'"$mc_regressor_list"'" \
-"'"$detrend_method"'" "'"$mt_diff_flag"'"; exit '"' );
+		set cmd = ( ${root_dir}/utilities/CBIG_preproc_create_mc_regressors $mc_par_list $mc_regressor_list $detrend_method $mt_diff_flag);
 		echo $cmd |& tee -a $LF
 		eval $cmd |& tee -a $LF
 		
@@ -366,9 +364,7 @@ endif
 echo "=======================Create wb, wm, csf regressors=======================" |& tee -a $LF 
 if ($whole_brain || $wm || $csf) then
 	if ($ROI_regressor_exist_flag == 0) then
-		set cmd = ( $MATLAB -nojvm -nodesktop -nodisplay -nosplash -r '"' 'addpath(fullfile('"'"$root_dir"'"\
-','"'"utilities"'"'))'; CBIG_preproc_create_ROI_regressors "'"$fMRI_list"'" "'"$ROI_regressors_list"'" "'"$wb_mask"'" \
-"'"$wm_mask"'" "'"$csf_mask"'" "'"$other_diff_flag"'"; exit '"' );
+		set cmd = ( ${root_dir}/utilities/CBIG_preproc_create_ROI_regressors $fMRI_list $ROI_regressors_list $wb_mask $wm_mask $csf_mask $other_diff_flag);
 		echo $cmd |& tee -a $LF
 		eval $cmd |& tee -a $LF
 		
@@ -396,9 +392,7 @@ if ( $aCompCor ) then
 		endif
 		
 		# The path needs to be changed after moved the matlab function in git repo
-		set cmd = ( $MATLAB -nojvm -nodesktop -nodisplay -nosplash -r '"' 'addpath(fullfile('"'"$root_dir"'"','\
-"'"utilities"'"'))'; CBIG_preproc_aCompCor_multipleruns "'"$fMRI_list"'" "'"$wm_csf_mask_comb"'" \
-"'"$CompCor_regressors_list"'" "'"$nPCs"'" "'"$per_run"'" "'"$aCompCor_diff_flag"'" ; exit '"' );
+		set cmd = ( ${root_dir}/utilities/CBIG_preproc_aCompCor_multipleruns $fMRI_list $wm_csf_mask_comb $CompCor_regressors_list $nPCs $per_run $aCompCor_diff_flag);
 		echo $cmd |& tee -a $LF
 		eval $cmd |& tee -a $LF
 		
@@ -482,9 +476,7 @@ endif
 echo "=======================Use glm to regress out all regressors=======================" |& tee -a $LF
 if ($motion12_itamar || $whole_brain || $wm || $csf || $aCompCor) then
 	if (($resid_exist_flag == 0) || ($force == 1)) then
-		set cmd = ( $MATLAB -nojvm -nodesktop -nodisplay -nosplash -r '"' 'addpath(fullfile('"'"$root_dir"'"','\
-"'"utilities"'"'))'; CBIG_glm_regress_vol "'"$fMRI_list"'" "'"$resid_list"'" "'"$all_regressors_list"'" \
-"'"$polynomial_fit"'" "'"$censor_list"'" "'"$per_run"'"; exit '"' )
+		set cmd = ( ${root_dir}/utilities/CBIG_glm_regress_vol $fMRI_list $resid_list $all_regressors_list $polynomial_fit $censor_list $per_run);
 		echo $cmd |& tee -a $LF
 		eval $cmd |& tee -a $LF
 	else

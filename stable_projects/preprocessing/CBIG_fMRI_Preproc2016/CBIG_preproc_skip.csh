@@ -82,7 +82,7 @@ foreach curr_bold ($zpdbold)
 	pushd $curr_bold
 	set boldfile = $subject"_bld$curr_bold$BOLD_stem"
 	if ( (! -e $boldfile"_skip$skip.nii.gz") || ($force == 1) ) then
-		echo "[SKIP]: boldfile = $boldfile" |& tee -a $LF
+		echo "[SKIP]: boldfile = $boldfile" |& tee -a $LF		
 		@ numof_tps = `fslnvols $boldfile` - $skip
 		echo "[SKIP]: Deleting first $skip frames (fslroi) from $boldfile" |& tee -a $LF
 		fslroi $boldfile $boldfile"_skip$skip" $skip $numof_tps |& tee -a $LF

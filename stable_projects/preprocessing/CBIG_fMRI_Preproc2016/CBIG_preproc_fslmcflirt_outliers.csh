@@ -64,11 +64,11 @@ set root_dir = `dirname $root_dir`
 ###############################
 # check if matlab exists
 ###############################
-set MATLAB=`which $CBIG_MATLAB_DIR/bin/matlab`
-if ($status) then
-	echo "ERROR: could not find matlab"
-	exit 1;
-endif
+# set MATLAB=`which $CBIG_MATLAB_DIR/bin/matlab`
+# if ($status) then
+	# echo "ERROR: could not find matlab"
+	# exit 1;
+# endif
 
 cd $sub_dir/$subject
 
@@ -198,8 +198,7 @@ foreach curr_bold ($zpdbold)
 	set mc_abs_rms_file = "${subject}_bld${curr_bold}${BOLD_stem}_mc_abs.rms"
 	set mc_rel_rms_file = "${subject}_bld${curr_bold}${BOLD_stem}_mc_rel.rms"
 	set outname_prefix = "${subject}_bld${curr_bold}${BOLD_stem}_mc"
-	
-	set cmd = ( $MATLAB -nodesktop -nodisplay -nosplash -r '"' 'addpath(genpath('"'"${root_dir}'/utilities'"'"'))'; CBIG_preproc_plot_mcflirt_par $mc_par_file $mc_abs_rms_file $mc_rel_rms_file $qc $outname_prefix; exit; '"' );
+	set cmd = ( ${root_dir}/utilities/CBIG_preproc_plot_mcflirt_par $mc_par_file $mc_abs_rms_file $mc_rel_rms_file $qc $outname_prefix );
 	echo $cmd |& tee -a $LF
 	eval $cmd |& tee -a $LF
 	
@@ -258,7 +257,7 @@ foreach curr_bold ($zpdbold)
 		set output = "$qc/${subject}_bld${curr_bold}"
 		set dvars_file = "$mc/${boldfile}_motion_outliers_DVARS"
 		set fd_file = "$mc/${boldfile}_motion_outliers_FDRMS"
-		set cmd = ( $MATLAB -nodesktop -nodisplay -nosplash -r '"' 'addpath(genpath('"'"${root_dir}'/utilities'"'"'))'; CBIG_preproc_DVARS_FDRMS_Correlation $dvars_file $fd_file $output; CBIG_preproc_motion_outliers $dvars_file $fd_file $fd_th $dv_th $discard_seg $output; exit; '"' );
+		set cmd = ( ${root_dir}/utilities/CBIG_preproc_DVARS_FDRMS_Correlation $dvars_file $fd_file $output; ${root_dir}/utilities/CBIG_preproc_motion_outliers $dvars_file $fd_file $fd_th $dv_th $discard_seg $output);
 		eval $cmd |& tee -a $LF
 	else
 		echo "[MC]: Motion outliers detection already created!" |& tee -a $LF
