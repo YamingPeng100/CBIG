@@ -48,11 +48,11 @@ set root_dir = `dirname $root_dir`
 ###############################
 # check if matlab exists
 ###############################
-set MATLAB=`which $CBIG_MATLAB_DIR/bin/matlab`
-if ($status) then
-	echo "ERROR: could not find matlab"
-	exit 1;
-endif
+# set MATLAB=`which $CBIG_MATLAB_DIR/bin/matlab`
+# if ($status) then
+	# echo "ERROR: could not find matlab"
+	# exit 1;
+# endif
 
 cd $sub_dir/$subject
 
@@ -165,10 +165,7 @@ if( -e $ROI_regressors_list ) then
 		end
 		
 		set fMRI_list = "$regress_folder/fMRI_list.txt"
-		set cmd = ( $MATLAB -nojvm -nodesktop -nodisplay -nosplash -r )
-		set cmd = ($cmd '"' 'addpath(fullfile('"'"$root_dir"'"','"'"utilities"'"'))'; )
-		set cmd = ($cmd CBIG_preproc_create_ROI_regressors "'"$fMRI_list"'" "'"$GS_list"'" )
-		set cmd = ($cmd "'"$wb_mask"'" "'""'" "'""'" "'"0"'"; exit '"' );
+		set cmd = (${root_dir}/utilities/CBIG_preproc_create_ROI_regressors $fMRI_list $GS_list $wb_mask 0);
 		echo $cmd |& tee -a $LF
 		eval $cmd |& tee -a $LF
 		rm $GS_list
@@ -194,17 +191,14 @@ foreach runfolder ($bold)
 	set output = $qc/${subject}_bld${runfolder}${BOLD_stem}_greyplot.png
 	
 	if ( "$regression_done" == 0 ) then
-		set cmd = ( $MATLAB -nodesktop  -nosplash -r '"' 'addpath(genpath('"'"${root_dir}'/utilities'"'"'))'; )
-		set cmd = ($cmd CBIG_preproc_QC_greyplot "'"$fmri_file"'"  "'"$FD_file"'"  "'"$DV_file"'"  "'"$output"'" )  
-		set cmd = ($cmd "'"GM_mask"'" "'"$gm_mask"'"  "'"WB_mask"'" "'"$wb_mask"'" "'"grey_vox_factor"'" "'"$grey_vox_fac"'")
-		set cmd = ($cmd "'"tp_factor"'" "'"$tp_fac"'" "'"FD_thres"'" "'"$FD_th"'" "'"DV_thres"'" "'"$DV_th"'"; exit; '"')
+		set cmd = (${root_dir}/utilities/CBIG_preproc_QC_greyplot $fmri_file $FD_file $DV_file $output) 
+        set cmd = ($cmd GM_mask $gm_mask WB_mask $wb_mask grey_vox_factor $grey_vox_fac) 
+        set cmd = ($cmd tp_factor $tp_fac FD_thres $FD_th DV_thres $DV_th);
 	else
 		set GS_txt = $qc/$subject"_bld"${runfolder}_WB.txt
-		
-		set cmd = ( $MATLAB -nodesktop  -nosplash -r '"' 'addpath(genpath('"'"${root_dir}'/utilities'"'"'))'; )
-		set cmd = ($cmd CBIG_preproc_QC_greyplot "'"$fmri_file"'"  "'"$FD_file"'"  "'"$DV_file"'"  "'"$output"'" )  
-		set cmd = ($cmd "'"GM_mask"'" "'"$gm_mask"'"  "'"WBS_text"'" "'"$GS_txt"'" "'"grey_vox_factor"'" "'"$grey_vox_fac"'")
-		set cmd = ($cmd "'"tp_factor"'" "'"$tp_fac"'" "'"FD_thres"'" "'"$FD_th"'" "'"DV_thres"'" "'"$DV_th"'"; exit; '"')
+		set cmd = (${root_dir}/utilities/CBIG_preproc_QC_greyplot $fmri_file $FD_file $DV_file $output)
+        set cmd = ($cmd GM_mask $gm_mask WBS_text $GS_txt grey_vox_factor $grey_vox_fac) 
+        set cmd = ($cmd tp_factor $tp_fac FD_thres $FD_th DV_thres $DV_th);
 	endif
 	echo $cmd |& tee -a $LF
 	eval $cmd |& tee -a $LF

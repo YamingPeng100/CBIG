@@ -1,0 +1,4 @@
+stable_projects/preprocessing/CBIG_fMRI_Preproc2016/utilities/CBIG_preproc_censor_wrapper filter=lfs diff=lfs merge=lfs -text
+stable_projects/preprocessing/CBIG_fMRI_Preproc2016/utilities/CBIG_preproc_censor filter=lfs diff=lfs merge=lfs -text
+stable_projects/preprocessing/CBIG_fMRI_Preproc2016/utilities/CBIG_preproc_CensorQC filter=lfs diff=lfs merge=lfs -text
+stable_projects/preprocessing/CBIG_fMRI_Preproc2016/utilities/CBIG_preproc_QC_greyplot filter=lfs diff=lfs merge=lfs -text
