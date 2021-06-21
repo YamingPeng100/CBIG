@@ -69,11 +69,11 @@ check_params_return:
 ###############################
 # check if matlab exists
 ###############################
-set MATLAB=`which $CBIG_MATLAB_DIR/bin/matlab`
-if ($status) then
-	echo "ERROR: could not find matlab"
-	exit 1;
-endif
+# set MATLAB=`which $CBIG_MATLAB_DIR/bin/matlab`
+# if ($status) then
+	# echo "ERROR: could not find matlab"
+	# exit 1;
+# endif
 
 setenv SUBJECTS_DIR $anat_dir
 
@@ -196,7 +196,7 @@ foreach runfolder ($bold)
 				exit 1;
 			endif
 			
-			$MATLAB -nodesktop -nodisplay -nosplash -r "addpath(fullfile('$root_dir', 'utilities'));CBIG_preproc_fsaverage_medialwall_fillin '$hemi' 'fsaverage6' '$input1' '$input2' '$tmp_output';exit" |& tee -a $LF
+			${root_dir}/utilities/CBIG_preproc_fsaverage_medialwall_fillin $hemi fsaverage6 $input1 $input2 $tmp_output |& tee -a $LF
 			
 			if ( ! -e $tmp_output ) then
 				echo "ERROR: Fill in medial wall failed. ${tmp_output} is not produced." |& tee -a $LF
@@ -294,7 +294,7 @@ foreach runfolder ($bold)
 			set before_NaN_name = $surffolder/$hemi.${subject}_bld${runfolder}${out_stem}.nii.gz
 			set after_NaN_name = $surffolder/$hemi.${subject}_bld${runfolder}${out_stem}_medialwallNaN.nii.gz
 			
-			$MATLAB -nodesktop -nodisplay -nosplash -r "addpath(fullfile('$root_dir', 'utilities'));CBIG_preproc_set_medialwall_NaN '$hemi' '$out_mesh' '$before_NaN_name' '$after_NaN_name';exit" |& tee -a $LF
+			${root_dir}/utilities/CBIG_preproc_set_medialwall_NaN $hemi $out_mesh $before_NaN_name $after_NaN_name |& tee -a $LF
 			
 			if ( -e $after_NaN_name ) then
 				echo "[SURF]: $after_NaN_name is successfully generated. Move it to $before_NaN_name." |& tee -a $LF
