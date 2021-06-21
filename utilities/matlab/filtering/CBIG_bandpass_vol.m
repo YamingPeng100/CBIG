@@ -117,6 +117,8 @@ end
  
 if (isempty(censor_file))
 	censor = [];
+elseif(censor_file == "skip")
+    censor = [];
 else
 	censor = load(censor_file);
 end

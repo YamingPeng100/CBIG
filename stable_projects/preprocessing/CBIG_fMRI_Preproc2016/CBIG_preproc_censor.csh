@@ -70,11 +70,11 @@ cd $sub_dir/$subject
 ###############################
 # check if matlab exists
 ###############################
-set MATLAB=`which $CBIG_MATLAB_DIR/bin/matlab`
-if ($status) then
-	echo "ERROR: could not find matlab"
-	exit 1;
-endif
+# set MATLAB=`which $CBIG_MATLAB_DIR/bin/matlab`
+# if ($status) then
+	# echo "ERROR: could not find matlab"
+	# exit 1;
+# endif
 
 ###############################
 # create log file
@@ -179,19 +179,12 @@ foreach runfolder ($bold)
 		# if one or both of the two outputs does not exist, call interpolation function
 		if ( "$bandpass_flag" == 0 ) then
 			# if do not perform bandpass filtering, do not pass in low_f and high_f
-			set cmd = ( $MATLAB -nojvm -nodesktop -nodisplay -nosplash -r)
-			set cmd = ($cmd '"''addpath(fullfile('"'"${root_dir}"'"',' "'"utilities"'"'))';)
-			set cmd = ($cmd 'CBIG_preproc_censor_wrapper('"'"${BOLD}.nii.gz"'"',' "'"${outlier_file}"'"',' "'"$TR"'"',' )
-			set cmd = ($cmd "'"${output_inter}"'"',' "'"${output}"'"',' "'"${loose_mask}"'"',' "'"${max_mem}"'"')'; exit '"')
+			set cmd = (${root_dir}/utilities/CBIG_preproc_censor_wrapper ${BOLD}.nii.gz $outlier_file $TR $output_inter $output $loose_mask $max_mem);
 			echo $cmd |& tee -a $LF
 			eval $cmd |& tee -a $LF
 		else
 			# if perform bandpass filtering, pass in low_f and high_f
-			set cmd = ( $MATLAB -nojvm -nodesktop -nodisplay -nosplash -r)
-			set cmd = ($cmd '"''addpath(fullfile('"'"${root_dir}"'"',' "'"utilities"'"'))';)
-			set cmd = ($cmd 'CBIG_preproc_censor_wrapper('"'"${BOLD}.nii.gz"'"',' "'"${outlier_file}"'"',' "'"$TR"'"',' )
-			set cmd = ($cmd "'"${output_inter}"'"',' "'"${output}"'"',' "'"${loose_mask}"'"',' "'"${max_mem}"'"',')
-			set cmd = ($cmd "'"${low_f}"'"',' "'"${high_f}"'"')'; exit '"' )
+			set cmd = (${root_dir}/utilities/CBIG_preproc_censor_wrapper ${BOLD}.nii.gz $outlier_file $TR $output_inter $output $loose_mask $max_mem $low_f $high_f);
 			echo $cmd |& tee -a $LF
 			eval $cmd |& tee -a $LF
 		endif
@@ -237,7 +230,7 @@ foreach runfolder ($bold)
 	set qc_out_dir = "${sub_dir}/${subject}/qc/censor_interp"
 	mkdir -p $qc_out_dir
 	if ( -e ${censor_inter} && -e ${censor_final} ) then
-		$MATLAB -nodesktop -nodisplay -nosplash -r "addpath(fullfile('${root_dir}', 'utilities')); CBIG_preproc_CensorQC('${qc_out_dir}', '$subject', '$runfolder', '${BOLD}.nii.gz', '${censor_inter}', '${censor_final}', '${sub_dir}/${subject}/bold/mask/${subject}.brainmask.bin.nii.gz', '${sub_dir}/${subject}/bold/mask/${subject}.func.gm.nii.gz', '${outlier_file}'); exit" |& tee -a $LF
+		${root_dir}/utilities/CBIG_preproc_CensorQC $qc_out_dir $subject $runfolder ${BOLD}.nii.gz ${censor_inter} $censor_final ${sub_dir}/${subject}/bold/mask/${subject}.brainmask.bin.nii.gz ${sub_dir}/${subject}/bold/mask/${subject}.func.gm.nii.gz $outlier_file |& tee -a $LF
 	else
 		echo "ERROR: One or two of the intermediate censoring result and final censoring result do not exist. Censoring QC cannot execute." |& tee -a $LF
 	endif

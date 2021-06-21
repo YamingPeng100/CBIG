@@ -109,7 +109,7 @@ foreach curr_bold ($zpdbold)
 	if ( $censor == 1 ) then
 		set censor_file = "$subject_dir/$subject/qc/$subject"_bld"${curr_bold}${OUTLIER_stem}"
 	else 
-		set censor_file = " "
+		set censor_file = "skip"
 	endif
 
 	# get fMRI file
