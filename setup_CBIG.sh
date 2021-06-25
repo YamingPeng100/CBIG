@@ -17,5 +17,5 @@ ln -s /CBIG_compiled-for-MCR/utilities/matlab/stats/CBIG_glm_regress_vol \
 /CBIG_compiled-for-MCR/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/utilities/CBIG_glm_regress_vol
 
 cd
-cp /extra_files/{CBIG_preproc_censor_wrapper, CBIG_preproc_censor, CBIG_preproc_CensorQC, CBIG_preproc_QC_greyplot} \
+cp /extra_files/{CBIG_preproc_censor_wrapper,CBIG_preproc_censor,CBIG_preproc_CensorQC,CBIG_preproc_QC_greyplot} \
 /CBIG_compiled-for-MCR/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/utilities
