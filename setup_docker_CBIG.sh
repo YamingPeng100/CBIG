@@ -20,8 +20,4 @@ cd
 cp /extra_files/{CBIG_preproc_censor_wrapper,CBIG_preproc_censor,CBIG_preproc_CensorQC,CBIG_preproc_QC_greyplot} \
 /CBIG_compiled-for-MCR/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/utilities
 
-cd /opt
-unzip -q workbench-linux64-v1.5.0.zip
-rm workbench-linux64-v1.5.0.zip
-
 echo "Done!"
